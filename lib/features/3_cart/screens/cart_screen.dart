@@ -143,7 +143,7 @@ class _CartScreenState extends State<CartScreen> {
                   const SizedBox(height: 8),
                   Row(
                     children: [
-                      Icon(Icons.star, size: 14, color: Colors.amber),
+                      Icon(Icons.attach_money, size: 14, color: Colors.amber),
                       const SizedBox(width: 6),
                       Text(
                         "Price: ${Product.price.toStringAsFixed(2)}",

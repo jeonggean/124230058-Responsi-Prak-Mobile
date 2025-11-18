@@ -416,7 +416,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           const Icon(
-                            Icons.star_rounded,
+                            Icons.attach_money,
                             color: Colors.amber,
                             size: 12,
                           ),

@@ -43,33 +43,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           ),
           overflow: TextOverflow.ellipsis,
         ),
-        actions: [
-          FutureBuilder<bool>(
-            future: _cartFuture,
-            builder: (context, snapshot) {
-              final isFavorite = snapshot.data ?? false;
-              return IconButton(
-                icon: Icon(
-                  isFavorite
-                      ? Icons.shopping_cart
-                      : Icons.shopping_cart_outlined,
-                  size: 26,
-                ),
-                color: Colors.white,
-                onPressed: () async {
-                  if (isFavorite) {
-                    await _cartsService.removeCart(widget.Product);
-                  } else {
-                    await _cartsService.addCart(widget.Product);
-                  }
-                  setState(() {
-                    _cartFuture = _cartsService.isCart(widget.Product);
-                  });
-                },
-              );
-            },
-          ),
-        ],
       ),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
@@ -100,9 +73,87 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               ),
             ),
             const SizedBox(height: 8),
-            Text(
-              "Price • ${widget.Product.price}",
-              style: TextStyle(fontSize: 17, color: Colors.grey.shade700),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "\$${widget.Product.price.toStringAsFixed(2)}",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.kPrimaryColor,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade200,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      widget.Product.category,
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.grey.shade700,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 8),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              child: FutureBuilder<bool>(
+                future: _cartFuture,
+                builder: (context, snapshot) {
+                  final isInCart = snapshot.data ?? false;
+
+                  return SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton.icon(
+                      onPressed: () async {
+                        if (isInCart) {
+                          await _cartsService.removeCart(widget.Product);
+                        } else {
+                          await _cartsService.addCart(widget.Product);
+                        }
+                        setState(() {
+                          _cartFuture = _cartsService.isCart(widget.Product);
+                        });
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: isInCart
+                            ? const Color(0xFFF44336)
+                            : const Color(0xFF6750A4),
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        elevation: 0,
+                      ),
+                      icon: Icon(
+                        isInCart
+                            ? Icons.remove_shopping_cart
+                            : Icons.add_shopping_cart,
+                        size: 22,
+                      ),
+                      label: Text(
+                        isInCart ? "Remove from Cart" : "Add to Cart",
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
             ),
             const SizedBox(height: 16),
             Padding(
