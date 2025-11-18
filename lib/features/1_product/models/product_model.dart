@@ -1,7 +1,7 @@
 class ProductModel {
   final int id;
   final String title;
-  final String price;
+  final double price;
   final String description;
   final String imageUrl;
 
@@ -18,7 +18,7 @@ class ProductModel {
       id: json['id'] ?? json['id'] ?? 0,
       title: json['title'] ?? "-",
       description: json['description'] ?? "-",
-      imageUrl: json['images']?['jpg']?['image_url'] ?? json['image_url'] ?? "",
+      imageUrl: json['image'] ?? "https://example.com/placeholder.jpg",
       price: (json['price'] ?? 0).toDouble(),
     );
   }
@@ -29,6 +29,7 @@ class ProductModel {
       'title': title,
       'price': price,
       'description': description,
+      'image': imageUrl,
     };
   }
 }

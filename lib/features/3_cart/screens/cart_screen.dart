@@ -46,7 +46,6 @@ class _CartScreenState extends State<CartScreen> {
         builder: (context) => ProductDetailScreen(Product: Product),
       ),
     ).then((_) {
-      
       _loadData();
     });
   }
@@ -56,32 +55,28 @@ class _CartScreenState extends State<CartScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Favorit Saya',
+          'Keranjang Saya',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
-      body: RefreshIndicator(
-        onRefresh: _loadData,
-        child: _buildBody(),
-      ),
+      body: RefreshIndicator(onRefresh: _loadData, child: _buildBody()),
     );
   }
 
   Widget _buildBody() {
     if (_controller.isLoading) {
       return Center(
-          child: CircularProgressIndicator(
-              color: Theme.of(context).colorScheme.primary));
+        child: CircularProgressIndicator(
+          color: Theme.of(context).colorScheme.primary,
+        ),
+      );
     }
 
     if (_controller.favorites.isEmpty) {
       return Center(
         child: Text(
-          'Belum ada Product favorit.',
-          style: TextStyle(
-            fontSize: 16,
-            color: AppColors.kSecondaryTextColor,
-          ),
+          'Belum ada Product di keranjang.',
+          style: TextStyle(fontSize: 16, color: AppColors.kSecondaryTextColor),
         ),
       );
     }
@@ -98,7 +93,6 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   Widget _buildProductCard(ProductModel Product) {
-    // Card ini saya samakan dengan di Product_list_screen
     return InkWell(
       onTap: () => _navigateToDetail(Product),
       child: Container(
@@ -152,7 +146,7 @@ class _CartScreenState extends State<CartScreen> {
                       Icon(Icons.star, size: 14, color: Colors.amber),
                       const SizedBox(width: 6),
                       Text(
-                        "Price: ${Product.price.toString()}",
+                        "Price: ${Product.price.toStringAsFixed(2)}",
                         style: TextStyle(
                           fontSize: 14,
                           color: AppColors.kSecondaryTextColor,

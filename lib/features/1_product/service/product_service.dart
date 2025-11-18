@@ -1,22 +1,19 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import '../models/product_model.dart'; 
+import '../models/product_model.dart';
 
 class ProductService {
   final String _baseUrl = "https://fakestoreapi.com/products";
 
   Future<List<ProductModel>> fetchTopProduct() async {
-    String url = "$_baseUrl/top/products";
+    String url = _baseUrl;
     print("Memanggil API");
 
     try {
       final response = await http.get(Uri.parse(url));
 
       if (response.statusCode == 200) {
-        final Map<String, dynamic> data = jsonDecode(response.body);
-        if (data['data'] == null) return [];
-
-        final List ProductJsonList = data['data'];
+        final List<dynamic> ProductJsonList = jsonDecode(response.body);
         List<ProductModel> Products = [];
         for (var ProductJson in ProductJsonList) {
           Products.add(ProductModel.fromJson(ProductJson));

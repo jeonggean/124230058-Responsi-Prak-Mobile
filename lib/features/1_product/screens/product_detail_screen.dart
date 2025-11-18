@@ -21,7 +21,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     super.initState();
     _cartFuture = _cartsService.isCart(widget.Product);
   }
-  
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +50,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               final isFavorite = snapshot.data ?? false;
               return IconButton(
                 icon: Icon(
-                  isFavorite ? Icons.favorite : Icons.favorite_border,
+                  isFavorite
+                      ? Icons.shopping_cart
+                      : Icons.shopping_cart_outlined,
                   size: 26,
                 ),
                 color: Colors.white,
@@ -62,9 +63,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     await _cartsService.addCart(widget.Product);
                   }
                   setState(() {
-                    _cartFuture = _cartsService.isCart(
-                      widget.Product,
-                    );
+                    _cartFuture = _cartsService.isCart(widget.Product);
                   });
                 },
               );
@@ -103,10 +102,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             const SizedBox(height: 8),
             Text(
               "Price • ${widget.Product.price}",
-              style: TextStyle(
-                fontSize: 17,
-                color: Colors.grey.shade700,
-              ),
+              style: TextStyle(fontSize: 17, color: Colors.grey.shade700),
             ),
             const SizedBox(height: 16),
             Padding(

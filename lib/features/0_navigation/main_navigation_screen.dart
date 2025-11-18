@@ -68,8 +68,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.card_travel),
-              activeIcon: Icon(Icons.card_travel_outlined),
+              icon: Icon(Icons.shopping_cart),
+              activeIcon: Icon(Icons.shopping_cart_outlined),
               label: 'Cart',
             ),
             BottomNavigationBarItem(

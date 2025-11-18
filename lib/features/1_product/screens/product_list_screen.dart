@@ -69,13 +69,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
       elevation: 0,
       flexibleSpace: FlexibleSpaceBar(
         background: Container(
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(30),
-              bottomRight: Radius.circular(30),
-            ),
-          ),
+          decoration: const BoxDecoration(color: Colors.white),
           child: Padding(
             padding: EdgeInsets.only(
               top: MediaQuery.of(context).padding.top + 20,
@@ -99,7 +93,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Halo, ${_username ?? 'User'}! 👋',
+              'Halo, ${_username ?? 'User'}!',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -109,10 +103,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
             const SizedBox(height: 4),
             Text(
               'Temukan Product favoritmu',
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.grey.shade600,
-              ),
+              style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
             ),
           ],
         ),
@@ -161,16 +152,10 @@ class _ProductListScreenState extends State<ProductListScreen> {
             ),
             child: TextField(
               controller: _searchController,
-              style: TextStyle(
-                color: AppColors.kTextColor,
-                fontSize: 16,
-              ),
+              style: TextStyle(color: AppColors.kTextColor, fontSize: 16),
               decoration: InputDecoration(
                 hintText: 'Cari Product...',
-                hintStyle: TextStyle(
-                  color: Colors.grey.shade500,
-                  fontSize: 16,
-                ),
+                hintStyle: TextStyle(color: Colors.grey.shade500, fontSize: 16),
                 prefixIcon: Icon(
                   Icons.search_rounded,
                   color: Colors.grey.shade500,
@@ -219,10 +204,10 @@ class _ProductListScreenState extends State<ProductListScreen> {
 
   Widget _buildProductGrid(List<ProductModel> list) {
     if (_controller.isLoading) {
-      return Container(
-        height: 280,
-        child: Center(
-          child: CircularProgressIndicator(color: AppColors.kPrimaryColor),
+      return SliverToBoxAdapter(
+        child: SizedBox(
+          height: 280,
+          child: Center(child: CircularProgressIndicator()),
         ),
       );
     }
@@ -253,10 +238,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
               Text(
                 _controller.errorMessage,
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.grey.shade500,
-                  fontSize: 14,
-                ),
+                style: TextStyle(color: Colors.grey.shade500, fontSize: 14),
               ),
               const SizedBox(height: 16),
               ElevatedButton(
@@ -276,10 +258,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                 ),
                 child: Text(
                   'Coba Lagi',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                  ),
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
                 ),
               ),
             ],
@@ -314,10 +293,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
               Text(
                 "Coba kata kunci lain atau periksa koneksi internet",
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.grey.shade500,
-                  fontSize: 14,
-                ),
+                style: TextStyle(color: Colors.grey.shade500, fontSize: 14),
               ),
             ],
           ),
@@ -347,7 +323,9 @@ class _ProductListScreenState extends State<ProductListScreen> {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (_) => ProductDetailScreen(Product: Product)),
+          MaterialPageRoute(
+            builder: (_) => ProductDetailScreen(Product: Product),
+          ),
         );
       },
       borderRadius: BorderRadius.circular(16),
@@ -444,7 +422,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                           ),
                           const SizedBox(width: 4),
                           Text(
-                            Product.price.toString(),
+                            Product.price.toStringAsFixed(2),
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 10,
@@ -497,7 +475,7 @@ class _SliverSearchBarDelegate extends SliverPersistentHeaderDelegate {
     double shrinkOffset,
     bool overlapsContent,
   ) {
-    return child;
+    return SizedBox.expand(child: child);
   }
 
   @override
