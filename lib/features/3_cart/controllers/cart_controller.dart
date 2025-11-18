@@ -1,0 +1,42 @@
+import '../../1_product/models/product_model.dart';
+import 'package:flutter/foundation.dart';
+import '../services/cart_service.dart';
+
+class CartController extends ChangeNotifier {
+  final CartsService _service = CartsService();
+
+  List<ProductModel> _favorites = [];
+  bool _isLoading = false;
+
+  List<ProductModel> get favorites => _favorites;
+  bool get isLoading => _isLoading;
+
+  void _notifyListenersIfNotDisposed() {
+    if (!hasListeners) return;
+    try {
+      notifyListeners();
+    } catch (e) {
+      // Controller is disposed, ignore
+    }
+  }
+
+  Future<void> loadFavorites() async {
+    _isLoading = true;
+    _notifyListenersIfNotDisposed();
+
+    try {
+      print('DEBUG CONTROLLER: Loading favorites...');
+      _favorites = await _service.getCarts();
+      print('DEBUG CONTROLLER: Loaded ${_favorites.length} favorites');
+      for (var fav in _favorites) {
+        print('DEBUG CONTROLLER: - ${fav.title}');
+      }
+    } catch (e) {
+      print('DEBUG CONTROLLER: Error loading favorites: $e');
+      _favorites = [];
+    }
+
+    _isLoading = false;
+    _notifyListenersIfNotDisposed();
+  }
+}

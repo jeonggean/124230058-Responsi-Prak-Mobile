@@ -1,0 +1,65 @@
+import 'package:flutter/foundation.dart';
+import '../services/auth_service.dart';
+
+class AuthController extends ChangeNotifier {
+  final AuthService _service = AuthService();
+
+  bool _isLoading = false;
+  String _errorMessage = '';
+
+  bool get isLoading => _isLoading;
+  String get errorMessage => _errorMessage;
+
+  void _notifyListenersIfNotDisposed() {
+    if (!hasListeners) return;
+    try {
+      notifyListeners();
+    } catch (e) {
+      // Controller is disposed, ignore
+    }
+  }
+
+  set errorMessage(String message) {
+    _errorMessage = message;
+    _notifyListenersIfNotDisposed();
+  }
+
+  Future<bool> isLoggedIn() async {
+    return await _service.isLoggedIn();
+  }
+
+  Future<bool> login(String username, String password) async {
+    _isLoading = true;
+    _errorMessage = '';
+    _notifyListenersIfNotDisposed();
+
+    try {
+      await _service.login(username, password);
+      return true;
+    } catch (e) {
+      _errorMessage = e.toString().replaceAll("Exception: ", "");
+      return false;
+    } finally {
+      _isLoading = false;
+      _notifyListenersIfNotDisposed();
+    }
+  }
+
+  Future<bool> register(String username, String password) async {
+    _isLoading = true;
+    _errorMessage = '';
+    _notifyListenersIfNotDisposed();
+
+    try {
+      await _service.register(username, password);
+      _errorMessage = "Registrasi berhasil! Silakan login.";
+      return true;
+    } catch (e) {
+      _errorMessage = e.toString().replaceAll("Exception: ", "");
+      return false;
+    } finally {
+      _isLoading = false;
+      _notifyListenersIfNotDisposed();
+    }
+  }
+}
